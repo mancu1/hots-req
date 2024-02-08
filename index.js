@@ -57,11 +57,11 @@ const args = parseArguments(process.argv);
 const help = args.help || args.h; // Помощь
 const mode = args.mode || args.m || "all"; // Режим работы: collection - коллекции, environment - окружение, all - коллекции и окружение
 const collectionName = args.name || args.n || ""; // Если имя не указано, получаем все коллекции
-const outputFilePath = args.file || args.f || null; // Если путь не указан, поддерживаем pipe
-const outputFilePathEnv = args.envfile || args.e || "Environment.json";
+const outputFilePath = args.file || args.f || "Collections.json"; // Если путь не указан, поддерживаем pipe
+const outputFilePathEnv = args.env_file || args.e || "Environment.json";
 const envName = args.env_name || args.en || ""; // Если имя не указано, получаем все глобальные Env
 const access_token = args.access_token || args.a || process.env.ACCESS_TOKEN; // Если токен не указан, используем переменную окружения
-//
+
 const options = {
     "method": "POST",
     "hostname": "hs-backend.infrastructure.prosebya.tech",
@@ -188,13 +188,9 @@ async function getCollection() {
 
         updateVersion(collections);
 
-        if (outputFilePath) {
             await writeFile(outputFilePath, JSON.stringify(collections, null, 2), {flag: "w"});
             console.log("Collections saved to", outputFilePath);
-        } else {
-            // Вывод в stdout для использования с pipe
-            console.log(JSON.stringify(collections, null, 2));
-        }
+
     } catch (e) {
         console.error("error on first request", e)
     }
@@ -242,7 +238,7 @@ Options:
 --mode, -m\t\t\tMode: collection, environment, all (default: all)
 --name, -n\t\t\tName of collection or folder (default: empty) fetch all collections
 --file, -f\t\t\tOutput file path (default: stdout)
---envfile, -e\t\t\tOutput environment file path (default: Environment.json)
+--env_file, -e\t\t\tOutput environment file path (default: Environment.json)
 --env_name, -en\t\t\tName of env  to fetch (default: empty) fetch only global env 
 --access_token, -a\t\tAccess token (default: process.env.ACCESS_TOKEN)
 --help, -h\t\t\tShow help`);
