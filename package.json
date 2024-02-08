@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file .env index.js --file=\"Collections.json\"",
-    "sf": "npm start && hopp test coll.json",
-    "sf2": "npm start && hopp test =",
-    "test": "hopp test Collections2.json"
+    "run-cli": "FILENAME=\"Collections.json\" ENV_FILENAME=\"Environment.json\" && node --env-file .env index.js --env_name=\"tetsEnv\" --file=\"$FILENAME\" --envfile=\"$ENV_FILENAME\" && hopp test \"$FILENAME\" -e \"$ENV_FILENAME\""
   },
   "keywords": [],
   "author": "",
